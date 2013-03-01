@@ -19,6 +19,25 @@ window.sum1=(number)->
       total = total + x
       console.log(total)
     
+window.fib=(number)->
+  x=1
+  y=1
+  z=0
+  #arr=[]
+  sum = 0
+  while x<number
+    z=x
+    x=x+y
+    y=z
+    sum= sum + x  if x%2 is 0 
+    
+    #arr.push(x) if x%2 is 0
+    console.log(x)
+  console.log(sum)
+  2
+    
+  
+
 window.clickhandler=()->
   $(".toggle").click( ()->
     console.log "test"
@@ -36,3 +55,11 @@ sync_object =
     "app_name": "diaryapp"
 
 Nimbus.Auth.setup(sync_object)
+
+window.Todo = Nimbus.Model.setup("Todo", [ "Done", "Description"])
+
+window.createTodo = (description,done) -> 
+  instance = Todo.create({ "Description":description, "Done":done})
+  
+
+
