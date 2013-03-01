@@ -44,6 +44,8 @@ window.clickhandler=()->
     $(this).hide()
   )
   
+
+  
 sync_object = 
   "GDrive":
     "key": "424243246254-n6b2v8j4j09723ktif41ln247n75pnts.apps.googleusercontent.com"
@@ -56,10 +58,24 @@ sync_object =
 
 Nimbus.Auth.setup(sync_object)
 
-window.Todo = Nimbus.Model.setup("Todo", [ "Done", "Description"])
+window.Todo = Nimbus.Model.setup("Todo", [ "done", "description"])
 
 window.createTodo = (description,done) -> 
-  instance = Todo.create({ "Description":description, "Done":done})
+  instance = Todo.create({ "description":description, "done":done})
   
+window.render_todo = () ->
+  $(".list").html("")
+  for x in Todo.all()
+    if x.done is true
+      todostring = "<li>" + x.description + '<div class="toggle active"> <div class="toggle-handle"></div> </div>' + "</li>"
+    else 
+      todostring = "<li>" + x.description + '<div class="toggle"> <div class="toggle-handle"></div> </div>' + "</li>"
+    #console.log(x)
+    #console.log("<li>" + x.description + "</li>")
+    #console.log(x.description)
+    $(".list").append(todostring)
+    
+    
+
 
 

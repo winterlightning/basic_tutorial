@@ -82,14 +82,31 @@
 
   Nimbus.Auth.setup(sync_object);
 
-  window.Todo = Nimbus.Model.setup("Todo", ["Done", "Description"]);
+  window.Todo = Nimbus.Model.setup("Todo", ["done", "description"]);
 
   window.createTodo = function(description, done) {
     var instance;
     return instance = Todo.create({
-      "Description": description,
-      "Done": done
+      "description": description,
+      "done": done
     });
+  };
+
+  window.render_todo = function() {
+    var todostring, x, _i, _len, _ref, _results;
+    $(".list").html("");
+    _ref = Todo.all();
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      x = _ref[_i];
+      if (x.done === true) {
+        todostring = "<li>" + x.description + '<div class="toggle active"> <div class="toggle-handle"></div> </div>' + "</li>";
+      } else {
+        todostring = "<li>" + x.description + '<div class="toggle"> <div class="toggle-handle"></div> </div>' + "</li>";
+      }
+      _results.push($(".list").append(todostring));
+    }
+    return _results;
   };
 
 }).call(this);
