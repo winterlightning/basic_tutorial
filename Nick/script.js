@@ -93,13 +93,6 @@
     return 2;
   };
 
-  window.clickhandler = function() {
-    return $(".toggle").click(function() {
-      console.log("test");
-      return $(this).hide();
-    });
-  };
-
   sync_object = {
     "GDrive": {
       "key": "424243246254-n6b2v8j4j09723ktif41ln247n75pnts.apps.googleusercontent.com",
@@ -115,31 +108,50 @@
 
   Nimbus.Auth.setup(sync_object);
 
-  window.Todo = Nimbus.Model.setup("Todo", ["done", "description"]);
-
-  window.createTodo = function(description, done) {
-    var instance;
-    return instance = Todo.create({
-      "description": description,
-      "done": done
-    });
+  window.appready = function() {
+    $("#login").hide();
+    return render_todo();
   };
 
   window.render_todo = function() {
-    var todostring, x, _i, _len, _ref, _results;
+    var todostring, x, _i, _len, _ref;
     $(".list").html("");
     _ref = Todo.all();
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       x = _ref[_i];
       if (x.done === true) {
-        todostring = "<li>" + x.description + '<div class="toggle active"> <div class="toggle-handle"></div> </div>' + "</li>";
+        todostring = "<li>" + x.description + '<a class="button-negative" style="right: 100px" id="' + x.id + '"> Delete </a> <div class="toggle active" id="' + x.id + '"><div class="toggle-handle"></div> </div>' + "</li>";
       } else {
-        todostring = "<li>" + x.description + '<div class="toggle"> <div class="toggle-handle"></div> </div>' + "</li>";
+        todostring = "<li>" + x.description + '<a class="button-negative" style="right: 100px" id="' + x.id + '"> Delete </a> <div class="toggle" id="' + x.id + '"><div class="toggle-handle"></div> </div>' + "</li>";
       }
-      _results.push($(".list").append(todostring));
+      $(".list").append(todostring);
     }
-    return _results;
+    window.clickhandler();
+    return window.deletehandler();
+  };
+
+  window.clickhandler = function() {
+    return $(".toggle").click(function() {
+      var x;
+      x = Todo.find(this.id);
+      if (x.done === true) {
+        x.done = false;
+      } else {
+        x.done = true;
+      }
+      x.save();
+      return $(this).toggleClass("active");
+    });
+  };
+
+  window.deletehandler = function() {
+    return $(".button-negative").click(function() {
+      var x;
+      console.log(this.id);
+      x = Todo.find(this.id);
+      x.destroy();
+      return render_todo();
+    });
   };
 
   window.addhandler = function() {
@@ -150,6 +162,15 @@
     return render_todo();
   };
 
-  Nimbus.Auth.set_app_ready(render_todo);
+  window.Todo = Nimbus.Model.setup("Todo", ["done", "description"]);
+
+  window.createTodo = function(description, done) {
+    return Todo.create({
+      "description": description,
+      "done": done
+    });
+  };
+
+  Nimbus.Auth.set_app_ready(appready);
 
 }).call(this);
