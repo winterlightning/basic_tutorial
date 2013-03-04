@@ -60,7 +60,7 @@ window.fib=(number)->
 window.clickhandler=()->
   $(".toggle").click( ()->
     console.log "test"
-    $(this).hide()
+    $(this).toggleClass("active")
   )
   
 
@@ -93,6 +93,7 @@ window.render_todo = () ->
     #console.log("<li>" + x.description + "</li>")
     #console.log(x.description)
     $(".list").append(todostring)
+  window.clickhandler()
     
 window.addhandler = () ->
   des = $("#todoinput").val()
