@@ -10,6 +10,25 @@ window.sumarray=(number_array)->
   for x in number_array
     total = total + x
   console.log(total) 
+      
+window.prime=(number)->
+  x = number 
+  y = x-1 
+  z = y-1 
+  while z>0
+    if y%z isnt 0 
+      z=z-1
+    else if z isnt 1 
+      y=y-1
+      z=y-1
+    else if x%y is 0 
+      console.log(y)
+      break
+    else 
+      y=y-1
+      z=y-1
+      
+window.times=(a=1,b=2)-> a*b
 
 window.sum1=(number)->
   number_array = [1..number-1]
@@ -75,6 +94,16 @@ window.render_todo = () ->
     #console.log(x.description)
     $(".list").append(todostring)
     
+window.addhandler = () ->
+  des = $("#todoinput").val()
+  console.log(des)    
+  createTodo(des,false)
+  render_todo()
+  
+Nimbus.Auth.set_app_ready(render_todo)
+
+
+
     
 
 

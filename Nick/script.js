@@ -20,6 +20,39 @@
     return console.log(total);
   };
 
+  window.prime = function(number) {
+    var x, y, z, _results;
+    x = number;
+    y = x - 1;
+    z = y - 1;
+    _results = [];
+    while (z > 0) {
+      if (y % z !== 0) {
+        _results.push(z = z - 1);
+      } else if (z !== 1) {
+        y = y - 1;
+        _results.push(z = y - 1);
+      } else if (x % y === 0) {
+        console.log(y);
+        break;
+      } else {
+        y = y - 1;
+        _results.push(z = y - 1);
+      }
+    }
+    return _results;
+  };
+
+  window.times = function(a, b) {
+    if (a == null) {
+      a = 1;
+    }
+    if (b == null) {
+      b = 2;
+    }
+    return a * b;
+  };
+
   window.sum1 = function(number) {
     var number_array, total, x, _i, _j, _len, _ref, _results, _results1;
     number_array = (function() {
@@ -108,5 +141,15 @@
     }
     return _results;
   };
+
+  window.addhandler = function() {
+    var des;
+    des = $("#todoinput").val();
+    console.log(des);
+    createTodo(des, false);
+    return render_todo();
+  };
+
+  Nimbus.Auth.set_app_ready(render_todo);
 
 }).call(this);

@@ -39,9 +39,12 @@
   <header class="bar-title">
     <h1 class="title">To-Do List</h1>
   </header>
+	<form style="margin-top:44px" onsubmit="addhandler();return false;">
+  		<input id="todoinput" type="text" placeholder="Full name"> 
+	</form>
 
   <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
-  <ul class="list" style="margin-top: 44px;">
+  <ul class="list">
   <!-- <li>
     List item 1
     <div class="toggle">
@@ -61,6 +64,7 @@
     </div>
   </li> -->
 </ul>
+
 
   </body>
 </html>
