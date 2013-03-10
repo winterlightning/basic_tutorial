@@ -20,6 +20,39 @@
     return console.log(total);
   };
 
+  window.prime = function(number) {
+    var x, y, z, _results;
+    x = number;
+    y = x - 1;
+    z = y - 1;
+    _results = [];
+    while (z > 0) {
+      if (y % z !== 0) {
+        _results.push(z = z - 1);
+      } else if (z !== 1) {
+        y = y - 1;
+        _results.push(z = y - 1);
+      } else if (x % y === 0) {
+        console.log(y);
+        break;
+      } else {
+        y = y - 1;
+        _results.push(z = y - 1);
+      }
+    }
+    return _results;
+  };
+
+  window.times = function(a, b) {
+    if (a == null) {
+      a = 1;
+    }
+    if (b == null) {
+      b = 2;
+    }
+    return a * b;
+  };
+
   window.sum1 = function(number) {
     var number_array, total, x, _i, _j, _len, _ref, _results, _results1;
     number_array = (function() {
@@ -60,13 +93,6 @@
     return 2;
   };
 
-  window.clickhandler = function() {
-    return $(".toggle").click(function() {
-      console.log("test");
-      return $(this).hide();
-    });
-  };
-
   sync_object = {
     "GDrive": {
       "key": "424243246254-n6b2v8j4j09723ktif41ln247n75pnts.apps.googleusercontent.com",
@@ -82,31 +108,69 @@
 
   Nimbus.Auth.setup(sync_object);
 
+  window.appready = function() {
+    $("#login").hide();
+    return render_todo();
+  };
+
+  window.render_todo = function() {
+    var todostring, x, _i, _len, _ref;
+    $(".list").html("");
+    _ref = Todo.all();
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      x = _ref[_i];
+      if (x.done === true) {
+        todostring = "<li>" + x.description + '<a class="button-negative" style="right: 100px" id="' + x.id + '"> Delete </a> <div class="toggle active" id="' + x.id + '"><div class="toggle-handle"></div> </div>' + "</li>";
+      } else {
+        todostring = "<li>" + x.description + '<a class="button-negative" style="right: 100px" id="' + x.id + '"> Delete </a> <div class="toggle" id="' + x.id + '"><div class="toggle-handle"></div> </div>' + "</li>";
+      }
+      $(".list").append(todostring);
+    }
+    window.clickhandler();
+    return window.deletehandler();
+  };
+
+  window.clickhandler = function() {
+    return $(".toggle").click(function() {
+      var x;
+      x = Todo.find(this.id);
+      if (x.done === true) {
+        x.done = false;
+      } else {
+        x.done = true;
+      }
+      x.save();
+      return $(this).toggleClass("active");
+    });
+  };
+
+  window.deletehandler = function() {
+    return $(".button-negative").click(function() {
+      var x;
+      console.log(this.id);
+      x = Todo.find(this.id);
+      x.destroy();
+      return render_todo();
+    });
+  };
+
+  window.addhandler = function() {
+    var des;
+    des = $("#todoinput").val();
+    console.log(des);
+    createTodo(des, false);
+    return render_todo();
+  };
+
   window.Todo = Nimbus.Model.setup("Todo", ["done", "description"]);
 
   window.createTodo = function(description, done) {
-    var instance;
-    return instance = Todo.create({
+    return Todo.create({
       "description": description,
       "done": done
     });
   };
 
-  window.render_todo = function() {
-    var todostring, x, _i, _len, _ref, _results;
-    $(".list").html("");
-    _ref = Todo.all();
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      x = _ref[_i];
-      if (x.done === true) {
-        todostring = "<li>" + x.description + '<div class="toggle active"> <div class="toggle-handle"></div> </div>' + "</li>";
-      } else {
-        todostring = "<li>" + x.description + '<div class="toggle"> <div class="toggle-handle"></div> </div>' + "</li>";
-      }
-      _results.push($(".list").append(todostring));
-    }
-    return _results;
-  };
+  Nimbus.Auth.set_app_ready(appready);
 
 }).call(this);
