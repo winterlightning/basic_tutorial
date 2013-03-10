@@ -47,7 +47,7 @@
     if (x % 2 === 0) {
       sum = sum - x;
     }
-    return console.log(sum);
+    return console.log(sum3);
   };
 
 }).call(this);

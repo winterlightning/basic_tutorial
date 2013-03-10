@@ -22,6 +22,6 @@ window.fib= (number)->
        sum=sum+x
    if x%2 is 0
      sum=sum-x   
-   console.log(sum)
+   console.log(sum3)
      
      
